@@ -1,2 +1,6 @@
-set*/*
-!set*/*.rs
+/.rust/
+/bin/
+/build/
+/lib/
+/set*/*
+!/set*/*.*
