@@ -2,7 +2,7 @@ extern mod decrypt;
 
 use std::path::Path;
 use std::io::fs::File;
-use std::io::buffered::BufferedReader;
+use std::io::BufferedReader;
 
 fn main() {
     let path = Path::new(file!() + "/../gist.txt");

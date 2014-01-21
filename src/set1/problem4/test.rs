@@ -2,7 +2,7 @@ extern mod decrypt;
 
 use std::path::Path;
 use std::io::fs::File;
-use std::io::buffered::BufferedReader;
+use std::io::BufferedReader;
 
 #[test]
 fn test_problem4_answer() {
