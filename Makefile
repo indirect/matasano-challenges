@@ -1,20 +1,21 @@
+all: test
+
 DIRS=$(shell ls -d src/set*/*)
-i_DIRS=$(addprefix i_,$(DIRS))
-t_DIRS=$(addprefix t_,$(DIRS))
-
-.PHONY: $(DIRS) $(i_DIRS) $(t_DIRS)
-
+.PHONY: $(DIRS)
 $(DIRS):
 	rustpkg build $(patsubst src/%,%,$@)
+compile: $(DIRS)
 
+i_DIRS=$(addprefix i_,$(DIRS))
+.PHONY: $(i_DIRS)
 $(i_DIRS):
 	rustpkg install $(patsubst i_src/%,%,$@)
+install: $(i_DIRS)
 
+t_DIRS=$(addprefix t_,$(DIRS))
+.PHONY: $(t_DIRS)
 $(t_DIRS):
 	rustpkg test $(patsubst t_src/%,%,$@)
-
-compile: $(DIRS)
-install: $(i_DIRS)
 test: $(t_DIRS)
 
 clean:
