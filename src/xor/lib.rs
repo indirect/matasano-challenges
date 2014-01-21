@@ -4,20 +4,20 @@ pub trait Xor {
 }
 
 impl<'a> Xor for &'a [u8] {
-    fn xor(&self, other: &[u8]) -> ~[u8] {	
-		std::vec::build(Some(self.len()), |push| {
-			for i in range(0, self.len()) {
-				let a = self.get_opt(i).unwrap();
-				let b = other.get_opt(i % other.len()).unwrap();
-				push(a.bitxor(b));
-			}
-		})
+    fn xor(&self, other: &[u8]) -> ~[u8] {    
+        std::vec::build(Some(self.len()), |push| {
+            for i in range(0, self.len()) {
+                let a = self.get_opt(i).unwrap();
+                let b = other.get_opt(i % other.len()).unwrap();
+                push(a.bitxor(b));
+            }
+        })
     }
 
     fn xor_byte(&self, byte: u8) -> ~[u8] {
-		let other = std::vec::build(Some(self.len()), |push| {
-			self.len().times(|| push(byte));
-		});
-		self.xor(other)
-	}
+        let other = std::vec::build(Some(self.len()), |push| {
+            self.len().times(|| push(byte));
+        });
+        self.xor(other)
+    }
 }
