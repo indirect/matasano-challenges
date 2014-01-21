@@ -13,7 +13,10 @@ pub struct Answer {
 }
 
 pub fn xor_byte(encrypted: &str) -> Option<Answer> {
-    let bytes = encrypted.from_hex().unwrap();
+    let bytes = match encrypted.from_hex() {
+        Ok(hex_bytes) => hex_bytes,
+        Err(msg) => fail!(msg)
+    };
 
     let mut possibles = range(0u8, 255u8).filter_map(|cand| {
         let xor_bytes = bytes.xor_byte(cand);
