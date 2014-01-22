@@ -20,11 +20,11 @@ pub fn xor_byte(encrypted: &str) -> Option<Answer> {
 
     let mut possibles = range(0u8, 255u8).filter_map(|cand| {
         let xor_bytes = bytes.xor_byte(cand);
-        match str::from_utf8_opt(xor_bytes) {
+        match str::from_utf8(xor_bytes) {
             Some(possible) => Some(Answer {
                 text: possible.to_owned(),
                 score: english::score(xor_bytes),
-                key: str::from_utf8_owned(~[cand])
+                key: str::from_utf8_owned(~[cand]).unwrap()
             }),
             None => None
         }

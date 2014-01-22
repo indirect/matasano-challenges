@@ -7,8 +7,8 @@ impl<'a> Xor for &'a [u8] {
     fn xor(&self, other: &[u8]) -> ~[u8] {    
         std::vec::build(Some(self.len()), |push| {
             for i in range(0, self.len()) {
-                let a = self.get_opt(i).unwrap();
-                let b = other.get_opt(i % other.len()).unwrap();
+                let a = self.get(i).unwrap();
+                let b = other.get(i % other.len()).unwrap();
                 push(a.bitxor(b));
             }
         })

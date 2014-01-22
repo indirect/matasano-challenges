@@ -6,8 +6,8 @@ use xor::Xor;
 
 fn main() {
     let args = std::os::args();
-    let plain  = args.get_opt(1).unwrap().as_bytes();
-    let key    = args.get_opt(2).unwrap().as_bytes();
+    let plain  = args.get(1).unwrap().as_bytes();
+    let key    = args.get(2).unwrap().as_bytes();
     let cipher = plain.xor(key);
 
     println!("plaintext:  {}", plain.to_hex());
