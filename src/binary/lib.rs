@@ -1,3 +1,6 @@
+#[crate_id = "binary#0.1"];
+#[crate_type = "lib"];
+
 pub trait Binary {
     fn to_binary(&self) -> ~str;
 }

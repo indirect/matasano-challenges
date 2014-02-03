@@ -1,3 +1,6 @@
+#[crate_id = "english#0.1"];
+#[crate_type = "lib"];
+
 pub fn score(bytes: &[u8]) -> int {
     bytes.iter().fold(0, |s, &x| {
         match x {

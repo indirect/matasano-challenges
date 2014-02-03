@@ -1,3 +1,6 @@
+#[crate_id = "hamming#0.2"];
+#[crate_type = "lib"];
+
 pub fn distance(one: &str, two: &str) -> i64 {
     if one.len() != two.len() {
         fail!("Hamming distance requires equal length strings")

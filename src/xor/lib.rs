@@ -1,3 +1,6 @@
+#[crate_id = "xor#0.1"];
+#[crate_type = "lib"];
+
 pub trait Xor {
     fn xor(&self, other: &[u8]) -> ~[u8];
     fn xor_byte(&self, other: u8) -> ~[u8];

@@ -1,3 +1,6 @@
+#[crate_id = "hex#0.1"];
+#[crate_type = "lib"];
+
 pub fn from_hex(hex_str: &str) -> ~[u8] {
     use std::num;
 

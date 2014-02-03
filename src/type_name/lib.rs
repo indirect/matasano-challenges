@@ -1,3 +1,6 @@
+#[crate_id = "type_name#0.1"];
+#[crate_type = "lib"];
+
 pub trait Any {
     fn type_name(&self) -> &'static str;
 }

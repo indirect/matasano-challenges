@@ -1,3 +1,6 @@
+#[crate_id = "decrypt#0.1"];
+#[crate_type = "lib"];
+
 extern mod extra;
 extern mod xor;
 extern mod english;
