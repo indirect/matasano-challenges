@@ -28,7 +28,7 @@ fn main() {
     let path = Path::new(file!() + "/../gist.txt");
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let encoded = reader.read_to_str();
-    let encoded_bytes = encoded.from_base64().unwrap();
+    let encoded_bytes = encoded.from_base64().unwrap().to_str();
 
     let mut keys: ~[Key] = std::vec::build(None, |push| {
         for cand in range(2u, 41u) {

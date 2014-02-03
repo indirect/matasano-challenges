@@ -1,6 +1,6 @@
-pub fn distance(one: &[u8], two: &[u8]) -> i64 {
+pub fn distance(one: &str, two: &str) -> i64 {
     if one.len() != two.len() {
-        fail!("only equal length strings")
+        fail!("Hamming distance requires equal length strings")
     }
 
     let mut dist: i64 = 0;
