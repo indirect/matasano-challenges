@@ -16,7 +16,7 @@ impl<'a> Xor for &'a [u8] {
 
     fn xor_byte(&self, byte: u8) -> ~[u8] {
         let other = std::vec::build(Some(self.len()), |push| {
-            self.len().times(|| push(byte));
+            for _ in range(0, self.len()) { push(byte) };
         });
         self.xor(other)
     }
