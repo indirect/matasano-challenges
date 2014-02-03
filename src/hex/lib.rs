@@ -1,12 +1,10 @@
 pub fn from_hex(hex_str: &str) -> ~[u8] {
     use std::num;
-    use std::str;
 
     let mut bytes: ~[u8] = ~[];
 
     for pair in hex_str.as_bytes().chunks(2) {
-        let pair_str = str::from_utf8(pair);
-        let byte = num::from_str_radix(pair_str, 16).unwrap();
+        let byte = num::from_str_radix(pair.to_str(), 16).unwrap();
         bytes.push(byte);
     }
 
