@@ -10,8 +10,7 @@ def lib(name)
   librs  = File.join("src", name, "lib.rs")
   return unless File.exist?(librs)
 
-  lib = `rustc --crate-file-name #{librs}`.chomp
-
+  lib = "lib/" << `rustc --crate-file-name #{librs}`.chomp
   file lib => librs do
     sh "rustc", librs, "--out-dir", "lib"
   end
@@ -32,6 +31,7 @@ def build(name)
   file mainbin => mainrs do
     sh "rustc", mainrs, "-o", mainbin
   end
+
   namespace :build do
     desc "Build #{name} binary"
     task name => mainbin
@@ -47,7 +47,6 @@ def test(name)
   file testbin => testrs do
     sh "rustc", testrs, "-o", "test/#{name}", "--test"
   end
-
   task "build:#{name}" => testbin
 
   namespace :test do
