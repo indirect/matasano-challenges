@@ -6,7 +6,7 @@ task :test
 desc "Build everything"
 task :build
 
-def lib(name)
+def build_lib_tasks(name)
   librs  = File.join("src", name, "lib.rs")
   return unless File.exist?(librs)
 
@@ -18,11 +18,11 @@ def lib(name)
     desc "Build #{name} crate"
     task name => lib
   end
-  task :build => "build:#{name}"
+  multitask :build => "build:#{name}"
 end
 
-def build(name)
-  lib(name)
+def build_tasks(name)
+  build_lib_tasks(name)
 
   mainrs = File.join("src", name, "main.rs")
   return unless File.exist?(mainrs)
@@ -36,15 +36,15 @@ def build(name)
     desc "Build #{name} binary"
     task name => mainbin
   end
-  task :build => "build:#{name}"
+  multitask :build => "build:#{name}"
 end
 
-def test(name)
+def test_tasks(name)
   testrs = File.join("src", name, "test.rs")
   return unless File.exist?(testrs)
 
   testbin = File.join("test", name)
-  file testbin => testrs do
+  file testbin => [:ensure_test_dir, testrs] do
     sh "rustc", testrs, "-o", "test/#{name}", "--test"
   end
   task "build:#{name}" => testbin
@@ -54,17 +54,21 @@ def test(name)
     task(name => testbin) { sh testbin }
   end
 
-  task :test => "test:#{name}"
+  multitask :test => "test:#{name}"
+end
+
+# A regular directory("test") conflicts with the
+# test task, so I'm doing this instead. o_O
+task :ensure_test_dir do
+  mkdir_p "test" unless File.exists?("test")
 end
 
 FileList['src/*'].each do |path|
   name = path.split('/').last
-  build(name)
-  test(name)
+  build_tasks(name)
+  test_tasks(name)
 end
 
 task :clean do
-  FileList['lib/*.{rlib,d}', 'test/*'].each do |f|
-    FileUtils.rm_rf(f)
-  end
+  FileList['lib/*.{rlib,d}', 'test/*'].each { |f| rm_rf(f) }
 end
