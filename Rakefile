@@ -6,28 +6,33 @@ task :test
 desc "Build everything"
 task :build
 
-def build_lib_tasks(name)
+def libs_tasks(name)
   librs  = File.join("src", name, "lib.rs")
   return unless File.exist?(librs)
 
-  lib = "lib/" << `rustc --crate-file-name #{librs}`.chomp
-  file lib => librs do
-    sh "rustc", librs, "--out-dir", "lib"
+  arch = `rustc -v | tail -n1 | awk '{ print $2 }'`.chomp
+  path = File.join("lib", arch)
+  file = `rustc --crate-file-name #{librs}`.chomp
+  libf = File.join(path, file)
+
+  file libf => librs do
+    sh "rustc", librs, "--out-dir", path
   end
+
   namespace :build do
     desc "Build #{name} crate"
-    task name => lib
+    task name => libf
   end
+
   multitask :build => "build:#{name}"
 end
 
-def build_tasks(name)
-  build_lib_tasks(name)
-
+def main_tasks(name)
   mainrs = File.join("src", name, "main.rs")
   return unless File.exist?(mainrs)
 
   mainbin = File.join("bin", name)
+
   file mainbin => mainrs do
     sh "rustc", mainrs, "-o", mainbin
   end
@@ -36,6 +41,7 @@ def build_tasks(name)
     desc "Build #{name} binary"
     task name => mainbin
   end
+
   multitask :build => "build:#{name}"
 end
 
@@ -44,10 +50,9 @@ def test_tasks(name)
   return unless File.exist?(testrs)
 
   testbin = File.join("test", name)
-  file testbin => [:ensure_test_dir, testrs] do
+  file testbin => [:test_dir, testrs] do
     sh "rustc", testrs, "-o", "test/#{name}", "--test"
   end
-  task "build:#{name}" => testbin
 
   namespace :test do
     desc "Test #{name} crate"
@@ -59,16 +64,33 @@ end
 
 # A regular directory("test") conflicts with the
 # test task, so I'm doing this instead. o_O
-task :ensure_test_dir do
+task :test_dir do
   mkdir_p "test" unless File.exists?("test")
+end
+
+def deps_tasks(name)
+  %w(lib.rs main.rs test.rs).map do |file|
+    src = File.join("src", name, file)
+
+    next unless File.exist?(src)
+    deps = File.read(src).scan(/extern mod (.*);/).flatten
+    deps -= %w(extra std) # we don't build these
+    next unless deps.any?
+
+    name = (file == "test.rs") ? "test:#{name}" : "build:#{name}"
+    outf = Rake::Task[name].prerequisites.first
+    task outf => deps.map{|n| "build:#{n}" }
+  end
 end
 
 FileList['src/*'].each do |path|
   name = path.split('/').last
-  build_tasks(name)
+  main_tasks(name)
+  libs_tasks(name)
   test_tasks(name)
+  deps_tasks(name)
 end
 
 task :clean do
-  FileList['lib/*.{rlib,d}', 'test/*'].each { |f| rm_rf(f) }
+  FileList['lib/**/*.rlib', 'test/*'].each { |f| rm_rf(f) }
 end
