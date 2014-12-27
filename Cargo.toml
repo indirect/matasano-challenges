@@ -1,0 +1,5 @@
+[package]
+
+name = "matasano_challenges"
+version = "0.0.1"
+authors = ["André Arko <andre@arko.net>"]
