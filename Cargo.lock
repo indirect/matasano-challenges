@@ -14,11 +14,16 @@ name = "decrypt"
 version = "0.0.1"
 dependencies = [
  "english 0.0.1",
+ "hamming 0.0.1",
  "xor 0.0.1",
 ]
 
 [[package]]
 name = "english"
+version = "0.0.1"
+
+[[package]]
+name = "hamming"
 version = "0.0.1"
 
 [[package]]

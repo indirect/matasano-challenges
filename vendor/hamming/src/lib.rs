@@ -1,7 +1,4 @@
-pub fn distance(one_str: &str, two_str: &str) -> i64 {
-    let one = one_str.as_bytes();
-    let two = two_str.as_bytes();
-
+pub fn distance(one: &[u8], two: &[u8]) -> i64 {
     if one.len() != two.len() {
         panic!("Hamming distance requires equal length strings")
     }
@@ -21,6 +18,6 @@ pub fn distance(one_str: &str, two_str: &str) -> i64 {
 
 #[test]
 fn test_hamming_distance() {
-    let distance = distance("this is a test", "wokka wokka!!!");
+    let distance = distance("this is a test".as_bytes(), "wokka wokka!!!".as_bytes());
     assert_eq!(37, distance);
 }
