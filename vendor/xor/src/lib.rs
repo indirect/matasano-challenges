@@ -1,10 +1,10 @@
-pub trait Xor {
-    fn xor(&self, other: &Vec<u8>) -> Vec<u8>;
+pub trait Xor for Sized? {
+    fn xor(&self, other: &[u8]) -> Vec<u8>;
     fn xor_byte(&self, other: u8) -> Vec<u8>;
 }
 
-impl Xor for Vec<u8> {
-    fn xor(&self, other: &Vec<u8>) -> Vec<u8> {
+impl Xor for [u8] {
+    fn xor(&self, other: &[u8]) -> Vec<u8> {
         let otherlen = other.len();
         Vec::from_fn(self.len(), |i| {
             let oi = i % otherlen;
@@ -22,7 +22,8 @@ impl Xor for Vec<u8> {
 #[test]
 fn test_xor_equal_length() {
     let bytes = vec!(1u8, 2, 3);
-    let xored = bytes.xor(&vec!(1u8, 1, 1));
+    let key = vec!(1u8, 1, 1);
+    let xored = bytes.xor(key.as_slice());
     assert_eq!(xored, [0, 3, 2]);
 }
 
@@ -30,7 +31,7 @@ fn test_xor_equal_length() {
 fn test_xor_repeating_key() {
     let bytes = vec!(1u8, 2, 3);
     let key = vec!(1u8);
-    assert_eq!(bytes.xor(&key), [0, 3, 2]);
+    assert_eq!(bytes.xor(key.as_slice()), [0, 3, 2]);
 }
 
 #[test]

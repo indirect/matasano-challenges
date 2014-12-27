@@ -10,6 +10,6 @@ fn set01_challenge02() {
     let other = "686974207468652062756c6c277320657965";
     let source_bytes = source.from_hex().unwrap();
     let other_bytes = other.from_hex().unwrap();
-    let result = source_bytes.xor(&other_bytes);
+    let result = source_bytes.xor(other_bytes.as_slice());
     assert_eq!(result.to_hex(), "746865206b696420646f6e277420706c6179");
 }
