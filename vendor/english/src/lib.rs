@@ -1,4 +1,4 @@
-pub fn score(bytes: &[u8]) -> int {
+pub fn score(bytes: &Vec<u8>) -> int {
     bytes.iter().fold(0, |s, &x| {
         match x {
             // letters are just a frequency table from the internet
@@ -44,6 +44,6 @@ pub fn score(bytes: &[u8]) -> int {
 
 #[test]
 fn test_score() {
-    let letter = b"e";
-    assert_eq!(score(letter), 120);
+    let letter = vec![b"e"[0]];
+    assert_eq!(score(&letter), 120);
 }
