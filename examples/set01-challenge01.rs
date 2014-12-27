@@ -1,4 +1,3 @@
-extern crate matasano_challenges;
 extern crate serialize;
 
 use serialize::hex::FromHex;
