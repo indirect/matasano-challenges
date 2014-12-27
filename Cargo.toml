@@ -3,3 +3,12 @@
 name = "matasano_challenges"
 version = "0.0.1"
 authors = ["André Arko <andre@arko.net>"]
+
+[dependencies.p]
+path = "vendor/p"
+
+[dependencies.type_name]
+path = "vendor/type_name"
+
+[dependencies.xor]
+path = "vendor/xor"
