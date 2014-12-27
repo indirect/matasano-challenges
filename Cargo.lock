@@ -2,9 +2,18 @@
 name = "matasano_challenges"
 version = "0.0.1"
 dependencies = [
+ "decrypt 0.0.1",
  "english 0.0.1",
  "p 0.0.1",
  "type_name 0.0.1",
+ "xor 0.0.1",
+]
+
+[[package]]
+name = "decrypt"
+version = "0.0.1"
+dependencies = [
+ "english 0.0.1",
  "xor 0.0.1",
 ]
 
