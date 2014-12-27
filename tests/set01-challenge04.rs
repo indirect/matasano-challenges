@@ -5,7 +5,7 @@ use std::io::fs::File;
 use std::io::BufferedReader;
 
 #[test]
-fn test_problem4_answer() {
+fn set01_challenge04() {
     let path = Path::new(file!().to_string() + "/../../files/set01-challenge04.txt");
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let answers = reader.lines().filter_map(|line| decrypt::xor_byte(line.unwrap().as_slice()) );
