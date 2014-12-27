@@ -11,6 +11,6 @@ fn main() {
     let cipher = plain.xor(key);
 
     println!("plaintext:  {}", plain.to_hex());
-    println!("key:        {}", key.to_hex());
+    println!("key:        {}  {}", key.to_hex(), key.to_ascii());
     println!("ciphertext: {}", cipher.to_hex());
 }
