@@ -1,0 +1,11 @@
+[package]
+
+name = "decrypt"
+version = "0.0.1"
+authors = ["Andre Arko <andre@arko.net>"]
+
+[dependencies.english]
+path = "../english"
+
+[dependencies.xor]
+path = "../xor"
