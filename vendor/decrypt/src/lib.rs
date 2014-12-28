@@ -16,10 +16,10 @@ pub fn xor_byte(bytes: &[u8]) -> Option<XorByteAnswer> {
     let possibles = range(0u8, 255).filter_map(|cand| {
         let xor_bytes = bytes.xor_byte(cand);
 
-        match String::from_utf8(xor_bytes.clone()) {
+        match String::from_utf8(xor_bytes) {
             Ok(possible) => Some(XorByteAnswer {
                 bytes: possible.as_bytes().to_vec(),
-                score: english::score(&xor_bytes),
+                score: english::score(possible.as_bytes()),
                 key: cand
             }),
             Err(_) => None

@@ -1,4 +1,4 @@
-pub fn score(bytes: &Vec<u8>) -> int {
+pub fn score(bytes: &[u8]) -> int {
     bytes.iter().fold(0, |s, &x| {
         match x {
             // letters are just a frequency table from the internet
