@@ -10,7 +10,7 @@ fn main() {
 
     if args.len() < 3 {
         let cipher = args[1].from_hex().unwrap();
-        let answer = decrypt::xor_repeating(cipher.as_slice());
+        let answer = decrypt::xor_repeating(cipher.as_slice()).unwrap();
 
         println!("ciphertext: {}", cipher.to_hex());
         println!("key:        {} {}", answer.key.to_hex(), String::from_utf8_lossy(answer.key.as_slice()));

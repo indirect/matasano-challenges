@@ -70,7 +70,7 @@ struct KeySize {
     distance: f64
 }
 
-fn key_size_for(bytes: &[u8]) -> Option<uint> {
+pub fn guess_block_size(bytes: &[u8]) -> Option<uint> {
     use std::cmp;
 
     let max_size = cmp::min(bytes.len() / 4, 30) + 1;
@@ -102,12 +102,12 @@ fn key_size_for(bytes: &[u8]) -> Option<uint> {
 }
 
 #[test]
-fn test_key_size_for() {
+fn test_guess_block_size() {
     use serialize::hex::FromHex;
 
     let cipher = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
     let bytes = cipher.from_hex().unwrap();
-    let key_size = key_size_for(bytes.as_slice());
+    let key_size = guess_block_size(bytes.as_slice());
     assert_eq!(key_size, Some(1));
 }
 
@@ -127,16 +127,23 @@ pub struct Decrypted {
     pub bytes: Vec<u8>
 }
 
-pub fn xor_repeating(bytes: &[u8]) -> Decrypted {
-    let key_size = key_size_for(bytes).unwrap();
+pub fn xor_repeating(bytes: &[u8]) -> Option<Decrypted> {
+    let key_size = match guess_block_size(bytes) {
+        Some(size) => size,
+        None => return None
+    };
 
     let mut keys: Vec<u8> = Vec::new();
     let mut cols: Vec<Vec<u8>> = Vec::new();
 
     for col in transpose(bytes, key_size).iter() {
-        let answer = xor_byte(col.as_slice()).unwrap();
-        keys.push(answer.key);
-        cols.push(answer.bytes);
+        match xor_byte(col.as_slice()) {
+            Some(answer) => {
+                keys.push(answer.key);
+                cols.push(answer.bytes);
+            },
+            None => return None
+        }
     }
 
     let mut text = Vec::new();
@@ -150,7 +157,7 @@ pub fn xor_repeating(bytes: &[u8]) -> Decrypted {
         }
     }
 
-    Decrypted{bytes: text, key: keys}
+    Some(Decrypted{bytes: text, key: keys})
 }
 
 #[test]

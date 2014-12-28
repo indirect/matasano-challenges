@@ -12,7 +12,7 @@ fn set01_challenge06() {
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let base64 = reader.read_to_end().unwrap();
     let bytes = base64.from_base64().unwrap();
-    let answer = decrypt::xor_repeating(bytes.as_slice());
+    let answer = decrypt::xor_repeating(bytes.as_slice()).unwrap();
     let key = String::from_utf8_lossy(answer.key.as_slice());
     let plaintext = String::from_utf8_lossy(answer.bytes.as_slice());
 

@@ -11,7 +11,7 @@ fn main() {
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let base64 = reader.read_to_end().unwrap();
     let bytes = base64.from_base64().unwrap();
-    let answer = decrypt::xor_repeating(bytes.as_slice());
+    let answer = decrypt::xor_repeating(bytes.as_slice()).unwrap();
 
     println!("key        {}", answer.key);
     println!("key text   {}", String::from_utf8_lossy(answer.key.as_slice()));
