@@ -28,16 +28,16 @@ pub fn score(bytes: &Vec<u8>) -> int {
             74 | 106 => s + 4,
             88 | 120 => s + 4,
             90 | 122 => s + 2,
-            // first we count \t\n\r as tiny but okay
-            9 | 10 | 13 => s + 1,
             // spaces are pretty likely
             32 => s + 50,
+            // then we count linebreaks \t\n\r as tiny but okay
+            9 | 10 | 13 => s + 10,
             // other ASCII characters are okay I guess
             33...126 => s + 1,
             // then we count any control chars as death
             0...31 => s - 10000,
             // anything we don't know about yet is probably bad
-            _ => s - 10000
+            _ => s - 10
         }
     })
 }
