@@ -7,5 +7,8 @@ authors = ["Andre Arko <andre@arko.net>"]
 [dependencies.english]
 path = "../english"
 
+[dependencies.hamming]
+path = "../hamming"
+
 [dependencies.xor]
 path = "../xor"
