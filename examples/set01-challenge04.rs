@@ -7,7 +7,7 @@ use std::io::BufferedReader;
 use serialize::hex::FromHex;
 
 fn main() {
-    let path = Path::new(file!().to_string() + "/../../files/set01-challenge04.txt");
+    let path = Path::new(file!().to_string() + "/../../data/set01-challenge04.txt");
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let answers = reader.lines().filter_map(|line| {
         let hex = line.unwrap().from_hex().unwrap();

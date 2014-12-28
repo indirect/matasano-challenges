@@ -7,7 +7,7 @@ use std::io::fs::File;
 use std::path::Path;
 
 fn main() {
-    let path = Path::new(file!().to_string() + "/../../files/set01-challenge06.txt");
+    let path = Path::new(file!().to_string() + "/../../data/set01-challenge06.txt");
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let base64 = reader.read_to_end().unwrap();
     let bytes = base64.from_base64().unwrap();

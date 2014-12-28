@@ -8,7 +8,7 @@ use serialize::hex::FromHex;
 
 #[test]
 fn set01_challenge04() {
-    let path = Path::new(file!().to_string() + "/../../files/set01-challenge04.txt");
+    let path = Path::new(file!().to_string() + "/../../data/set01-challenge04.txt");
     let mut reader = BufferedReader::new(File::open(&path).unwrap());
     let answers = reader.lines().filter_map(|line| {
         let hex = line.unwrap().from_hex().unwrap();
