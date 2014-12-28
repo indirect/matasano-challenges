@@ -9,6 +9,6 @@ fn set01_challenge03() {
     let bytes  = source.from_hex().unwrap();
     let answer = decrypt::xor_byte(bytes.as_slice()).unwrap();
 
-    assert_eq!("X", answer.key);
-    assert_eq!("Cooking MC's like a pound of bacon", answer.text);
+    assert_eq!(b'X', answer.key);
+    assert_eq!(b"Cooking MC's like a pound of bacon", answer.bytes);
 }

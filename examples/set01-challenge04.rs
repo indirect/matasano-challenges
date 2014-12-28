@@ -16,6 +16,6 @@ fn main() {
     let best = answers.max_by(|answer| answer.score ).unwrap();
 
     println!("best score: {}", best.score.to_string());
-    println!("decrypted: {}", best.text.trim_right());
+    println!("decrypted: {}", best.bytes);
     println!("xor key: '{}'", best.key);
 }

@@ -9,5 +9,5 @@ fn main() {
     let answer = decrypt::xor_byte(bytes.as_slice()).unwrap();
 
     println!("The best score was {}, using the key {}", answer.score, answer.key);
-    println!("The decoded string is: {}", answer.text);
+    println!("The decoded string is: {}", String::from_utf8_lossy(answer.bytes.as_slice()));
 }

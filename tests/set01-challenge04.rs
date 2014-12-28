@@ -16,6 +16,6 @@ fn set01_challenge04() {
     });
     let best = answers.max_by(|answer| answer.score ).unwrap();
 
-    assert_eq!(best.text, "Now that the party is jumping\n");
-    assert_eq!(best.key, "5");
+    assert_eq!(b"Now that the party is jumping\n", best.bytes);
+    assert_eq!(b'5', best.key);
 }
