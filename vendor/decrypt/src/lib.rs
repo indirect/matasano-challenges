@@ -111,16 +111,6 @@ fn test_guess_block_size() {
     assert_eq!(key_size, Some(1));
 }
 
-trait ToUtf8String for Sized? {
-    fn to_utf8_string(&self) -> String;
-}
-
-impl ToUtf8String for [u8] {
-    fn to_utf8_string(&self) -> String {
-       String::from_utf8(self.to_vec()).unwrap()
-    }
-}
-
 #[deriving(Show)]
 pub struct Decrypted {
     pub key: Vec<u8>,
