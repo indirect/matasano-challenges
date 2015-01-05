@@ -32,6 +32,24 @@ pub fn detect(bytes: &[u8]) -> bool {
     repeated_block_count(bytes, 16) > 0
 }
 
+#[test]
+fn is_ecb_with_repeated_16_bytes() {
+    let bytes = vec![
+        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
+        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+    ];
+    assert_eq!(true, detect(bytes.as_slice()));
+}
+
+#[test]
+fn is_not_ecb_with_repeated_15_bytes() {
+    let bytes = vec![
+        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+        1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+    ];
+    assert_eq!(false, detect(bytes.as_slice()));
+}
+
 pub fn repeated_block_count(bytes: &[u8], block_size: uint) -> uint {
     let block_count = bytes.len() / block_size as uint;
 
