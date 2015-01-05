@@ -1,4 +1,4 @@
-fn count_repeated_blocks(bytes: &[u8], block_size: uint) -> uint {
+pub fn count_repeated_blocks(bytes: &[u8], block_size: uint) -> uint {
     let block_count = bytes.len() / block_size as uint;
 
     let mut repeated_blocks: uint = 0;
