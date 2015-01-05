@@ -12,10 +12,10 @@ fn main() {
 
     for (index, hex_line) in reader.lines().enumerate() {
         let bytes = hex_line.unwrap().from_hex().unwrap();
-        let repeated_blocks = crypto::count_repeated_blocks(bytes.as_slice(), 16);
+        let is_ecb = crypto::ecb::detect(bytes.as_slice());
 
-        if repeated_blocks > 0 {
-            println!("line {} repeated {} blocks", index, repeated_blocks);
+        if is_ecb {
+            println!("line {} is likely encrypted using ECB", index);
         }
     }
 }

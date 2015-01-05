@@ -14,9 +14,9 @@ fn set01_challenge08() {
     let ecb_lines: Vec<uint> = reader.lines().enumerate().filter_map(|tuple| {
         let (index, hex_line) = tuple;
         let bytes = hex_line.unwrap().from_hex().unwrap();
-        let repeated_blocks = crypto::count_repeated_blocks(bytes.as_slice(), 16);
+        let is_ecb = crypto::ecb::detect(bytes.as_slice());
 
-        if repeated_blocks > 0 {
+        if is_ecb {
             Some(index)
         } else {
             None

@@ -1,4 +1,4 @@
-extern crate openssl;
+extern crate crypto;
 extern crate serialize;
 
 use serialize::hex::{FromHex,ToHex};
@@ -7,12 +7,9 @@ fn main() {
     let args = std::os::args();
 
     let key = args[1].as_bytes();
-    let iv = Vec::new();
     let cipher = args[2].from_hex().unwrap();
-    let result = openssl::crypto::symm::decrypt(
-        openssl::crypto::symm::Type::AES_128_ECB,
+    let result = crypto::ecb::decrypt_zero_iv(
         key.as_slice(),
-        iv,
         cipher.as_slice()
     );
 
