@@ -14,6 +14,20 @@ pub fn decrypt_zero_iv(key: &[u8], bytes: &[u8]) -> Vec<u8> {
     decrypt(key, iv.as_slice(), bytes)
 }
 
+pub fn encrypt(key: &[u8], iv: &[u8], bytes: &[u8]) -> Vec<u8> {
+    openssl::crypto::symm::encrypt(
+        openssl::crypto::symm::Type::AES_128_ECB,
+        key,
+        iv.to_vec(),
+        bytes
+    )
+}
+
+pub fn encrypt_zero_iv(key: &[u8], bytes: &[u8]) -> Vec<u8> {
+    let iv = Vec::from_elem(bytes.len(), 0);
+    encrypt(key, iv.as_slice(), bytes)
+}
+
 pub fn detect(bytes: &[u8]) -> bool {
     repeated_block_count(bytes, 16) > 0
 }
