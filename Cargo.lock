@@ -2,6 +2,7 @@
 name = "matasano_challenges"
 version = "0.0.1"
 dependencies = [
+ "crypto 0.0.1",
  "decrypt 0.0.1",
  "english 0.0.1",
  "openssl 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -9,6 +10,10 @@ dependencies = [
  "type_name 0.0.1",
  "xor 0.0.1",
 ]
+
+[[package]]
+name = "crypto"
+version = "0.0.1"
 
 [[package]]
 name = "decrypt"
