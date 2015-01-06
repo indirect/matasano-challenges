@@ -1,4 +1,4 @@
-extern crate openssl;
+extern crate crypto;
 extern crate serialize;
 
 use serialize::base64::FromBase64;
@@ -13,11 +13,8 @@ fn main() {
     let data = base64.from_base64().unwrap();
 
     let key = "YELLOW SUBMARINE".as_bytes();
-    let iv = Vec::new();
-    let result = openssl::crypto::symm::decrypt(
-        openssl::crypto::symm::Type::AES_128_ECB,
+    let result = crypto::ecb::decrypt_zero_iv(
         key.as_slice(),
-        iv,
         data.as_slice()
     );
     let plaintext = String::from_utf8_lossy(result.as_slice());
