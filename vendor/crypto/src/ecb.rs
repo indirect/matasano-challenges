@@ -9,10 +9,27 @@ pub fn decrypt(key: &[u8], iv: &[u8], bytes: &[u8]) -> Vec<u8> {
     )
 }
 
+#[test]
+fn test_decrypt_with_bytes() {
+    let cipher = vec![184, 124, 88, 185, 252, 29, 20, 196, 136, 49, 0, 92, 97, 23, 140, 203];
+    let iv = Vec::from_elem(16, 0);
+    let bytes = decrypt("YELLOW SUBMARINE".as_bytes(), iv.as_slice(), cipher.as_slice());
+    assert_eq!("hi there".as_bytes(), bytes);
+}
+
+
 pub fn decrypt_zero_iv(key: &[u8], bytes: &[u8]) -> Vec<u8> {
     let iv = Vec::from_elem(bytes.len(), 0);
     decrypt(key, iv.as_slice(), bytes)
 }
+
+#[test]
+fn test_decrypt_zero_iv_with_bytes() {
+    let cipher = vec![184, 124, 88, 185, 252, 29, 20, 196, 136, 49, 0, 92, 97, 23, 140, 203];
+    let bytes = decrypt_zero_iv("YELLOW SUBMARINE".as_bytes(), cipher.as_slice());
+    assert_eq!("hi there".as_bytes(), bytes);
+}
+
 
 pub fn encrypt(key: &[u8], iv: &[u8], bytes: &[u8]) -> Vec<u8> {
     openssl::crypto::symm::encrypt(
@@ -23,10 +40,25 @@ pub fn encrypt(key: &[u8], iv: &[u8], bytes: &[u8]) -> Vec<u8> {
     )
 }
 
+#[test]
+fn test_encrypt_with_bytes() {
+    let iv = Vec::from_elem(16, 0);
+    let bytes = encrypt("YELLOW SUBMARINE".as_bytes(), iv.as_slice(), "hi there".as_bytes());
+    assert_eq!(vec![184, 124, 88, 185, 252, 29, 20, 196, 136, 49, 0, 92, 97, 23, 140, 203], bytes);
+}
+
+
 pub fn encrypt_zero_iv(key: &[u8], bytes: &[u8]) -> Vec<u8> {
     let iv = Vec::from_elem(bytes.len(), 0);
     encrypt(key, iv.as_slice(), bytes)
 }
+
+#[test]
+fn test_encrypt_zero_iv_with_bytes() {
+    let bytes = encrypt_zero_iv("YELLOW SUBMARINE".as_bytes(), "hi there".as_bytes());
+    assert_eq!(vec![184, 124, 88, 185, 252, 29, 20, 196, 136, 49, 0, 92, 97, 23, 140, 203], bytes);
+}
+
 
 pub fn detect(bytes: &[u8]) -> bool {
     repeated_block_count(bytes, 16) > 0
@@ -49,6 +81,7 @@ fn is_not_ecb_with_repeated_15_bytes() {
     ];
     assert_eq!(false, detect(bytes.as_slice()));
 }
+
 
 pub fn repeated_block_count(bytes: &[u8], block_size: uint) -> uint {
     let block_count = bytes.len() / block_size as uint;
