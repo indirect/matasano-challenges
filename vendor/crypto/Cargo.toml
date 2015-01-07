@@ -6,3 +6,6 @@ authors = ["Andre Arko <andre@arko.net>"]
 
 [dependencies.openssl]
 git = "https://github.com/sfackler/rust-openssl"
+
+[dependencies.xor]
+path = "../xor"
