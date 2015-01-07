@@ -4,5 +4,5 @@ name = "crypto"
 version = "0.0.1"
 authors = ["Andre Arko <andre@arko.net>"]
 
-[dependencies]
-openssl = "0.2.13"
+[dependencies.openssl]
+git = "https://github.com/sfackler/rust-openssl"

@@ -21,7 +21,7 @@ fn main() {
         let plain = cipher.xor(key);
 
         println!("ciphertext: {}", cipher.to_hex());
-        println!("key:        {} {}", key.to_hex(), key.to_ascii());
+        println!("key:        {} {}", key.to_hex(), String::from_utf8_lossy(key.as_slice()));
         println!("plaintext:  {}", String::from_utf8_lossy(plain.as_slice()));
     }
 }
