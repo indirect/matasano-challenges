@@ -1,4 +1,4 @@
-pub trait Xor for Sized? {
+pub trait Xor {
     fn xor(&self, other: &[u8]) -> Vec<u8>;
     fn xor_byte(&self, other: u8) -> Vec<u8>;
 }
@@ -6,16 +6,16 @@ pub trait Xor for Sized? {
 impl Xor for [u8] {
     fn xor(&self, other: &[u8]) -> Vec<u8> {
         let otherlen = other.len();
-        Vec::from_fn(self.len(), |i| {
+        range(0, self.len()).map(|i| {
             let oi = i % otherlen;
-            self[i].bitxor(other[oi])
-        })
+            self[i] ^ other[oi]
+        }).collect()
     }
 
     fn xor_byte(&self, byte: u8) -> Vec<u8> {
-        Vec::from_fn(self.len(), |i| {
-            self[i].bitxor(byte)
-        })
+        range(0, self.len()).map(|i| {
+            self[i] ^ byte
+        }).collect()
     }
 }
 

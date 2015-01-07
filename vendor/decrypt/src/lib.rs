@@ -5,7 +5,7 @@ extern crate hamming;
 
 use xor::Xor;
 
-#[deriving(Show)]
+#[derive(Show)]
 pub struct XorByteAnswer {
     pub bytes: Vec<u8>,
     pub key: u8,
@@ -64,7 +64,7 @@ fn test_transpose() {
     assert_eq!(result[2].len(), 3);
 }
 
-#[deriving(Show)]
+#[derive(Show)]
 struct KeySize {
     value: uint,
     distance: f64
@@ -95,7 +95,7 @@ pub fn guess_block_size(bytes: &[u8]) -> Option<uint> {
 
     keys.sort_by(|a,b| a.distance.partial_cmp(&b.distance).unwrap() );
 
-    match keys.head() {
+    match keys.get(0) {
         Some(k) => Some(k.value),
         _ => None
     }
@@ -111,7 +111,7 @@ fn test_guess_block_size() {
     assert_eq!(key_size, Some(1));
 }
 
-#[deriving(Show)]
+#[derive(Show)]
 pub struct Decrypted {
     pub key: Vec<u8>,
     pub bytes: Vec<u8>

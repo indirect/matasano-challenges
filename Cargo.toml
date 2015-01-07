@@ -4,9 +4,6 @@ name = "matasano_challenges"
 version = "0.0.1"
 authors = ["André Arko <andre@arko.net>"]
 
-[dependencies]
-openssl = "0.2.8"
-
 [dependencies.crypto]
 path = "vendor/crypto"
 
