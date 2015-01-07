@@ -1,6 +1,6 @@
 pub mod ecb;
 
-pub fn pkcs7(block_size: uint, bytes: &[u8]) -> Vec<u8> {
+pub fn pkcs7(bytes: &[u8], block_size: uint) -> Vec<u8> {
     let padding_size = block_size - (bytes.len() % block_size);
     let pad = padding_size as u8;
 
