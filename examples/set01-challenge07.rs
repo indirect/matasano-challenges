@@ -13,7 +13,7 @@ fn main() {
     let data = base64.from_base64().unwrap();
 
     let key = "YELLOW SUBMARINE".as_bytes();
-    let result = crypto::ecb::decrypt_zero_iv(
+    let result = crypto::ecb::decrypt(
         key.as_slice(),
         data.as_slice()
     );

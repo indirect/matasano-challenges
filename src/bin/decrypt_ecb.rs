@@ -8,7 +8,7 @@ fn main() {
 
     let key = args[1].as_bytes();
     let cipher = args[2].from_hex().unwrap();
-    let result = crypto::ecb::decrypt_zero_iv(
+    let result = crypto::ecb::decrypt(
         key.as_slice(),
         cipher.as_slice()
     );
