@@ -11,35 +11,31 @@ pub fn decrypt(key: &[u8], bytes: &[u8]) -> Vec<u8> {
 
 #[test]
 fn test_decrypt_with_bytes() {
-    let cipher = vec![184, 124, 88, 185, 252, 29, 20, 196, 136, 49, 0, 92, 97, 23, 140, 203];
+    let cipher = vec![
+        209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8,
+        96, 250, 54, 112, 126, 69, 244, 153, 219, 160, 242, 91, 146, 35, 1, 165
+    ];
     let bytes = decrypt(b"YELLOW SUBMARINE", cipher.as_slice());
-    assert_eq!(b"hi there", bytes);
+    assert_eq!(b"YELLOW SUBMARINE", bytes);
 }
 
 pub fn encrypt(key: &[u8], bytes: &[u8]) -> Vec<u8> {
-    let mut result = openssl::crypto::symm::encrypt(
+    openssl::crypto::symm::encrypt(
         openssl::crypto::symm::Type::AES_128_ECB,
         key,
         vec![],
         bytes
-    );
-
-    if bytes.len() % 16 == 0 {
-        // openssl pads exact blocks with another block,
-        // so we throw away that last block here
-        result.truncate(bytes.len());
-    }
-
-    result
+    )
 }
 
 #[test]
-fn test_encrypt_with_bytes() {
+fn test_encrypt_with_exact_block_size() {
     let plain = b"YELLOW SUBMARINE";
     let bytes = encrypt(b"YELLOW SUBMARINE", plain);
-    assert_eq!(16, bytes.len());
+    assert_eq!(32, bytes.len());
     assert_eq!(vec![
-        209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8
+        209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8,
+        96, 250, 54, 112, 126, 69, 244, 153, 219, 160, 242, 91, 146, 35, 1, 165
     ], bytes);
 }
 
