@@ -1,42 +1,44 @@
 extern crate openssl;
+use self::openssl::crypto::symm;
 
-pub fn decrypt(key: &[u8], bytes: &[u8]) -> Vec<u8> {
-    openssl::crypto::symm::decrypt(
-        openssl::crypto::symm::Type::AES_128_ECB,
-        key,
-        vec![],
-        bytes
-    )
+pub fn decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    let iv: Vec<u8> = vec![];
+    let crypter = symm::Crypter::new(symm::Type::AES_128_ECB);
+    crypter.init(symm::Mode::Decrypt, key, iv);
+    crypter.pad(false);
+
+    let result = crypter.update(data);
+    crypter.finalize();
+    result
 }
 
 #[test]
 fn test_decrypt_with_bytes() {
-    let cipher = vec![
-        209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8,
-        96, 250, 54, 112, 126, 69, 244, 153, 219, 160, 242, 91, 146, 35, 1, 165
-    ];
+    let cipher = vec![209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8];
     let bytes = decrypt(b"YELLOW SUBMARINE", cipher.as_slice());
     assert_eq!(b"YELLOW SUBMARINE", bytes);
 }
 
-pub fn encrypt(key: &[u8], bytes: &[u8]) -> Vec<u8> {
-    openssl::crypto::symm::encrypt(
-        openssl::crypto::symm::Type::AES_128_ECB,
-        key,
-        vec![],
-        bytes
-    )
+pub fn encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    let iv: Vec<u8> = vec![];
+    let crypter = symm::Crypter::new(symm::Type::AES_128_ECB);
+    crypter.init(symm::Mode::Encrypt, key, iv);
+    crypter.pad(false);
+
+    let result = crypter.update(data);
+    crypter.finalize();
+    result
 }
 
 #[test]
 fn test_encrypt_with_exact_block_size() {
     let plain = b"YELLOW SUBMARINE";
     let bytes = encrypt(b"YELLOW SUBMARINE", plain);
-    assert_eq!(32, bytes.len());
-    assert_eq!(vec![
-        209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8,
-        96, 250, 54, 112, 126, 69, 244, 153, 219, 160, 242, 91, 146, 35, 1, 165
-    ], bytes);
+    assert_eq!(16, bytes.len());
+    assert_eq!(
+        vec![209, 170, 79, 101, 120, 146, 101, 66, 251, 182, 221, 135, 108, 210, 5, 8],
+        bytes
+    );
 }
 
 
