@@ -1,15 +1,21 @@
 extern crate openssl;
 use self::openssl::crypto::symm;
 
-pub fn decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
-    let iv: Vec<u8> = vec![];
+fn crypt(mode: symm::Mode, key: &[u8], data: &[u8]) -> Vec<u8> {
+    // ecb doesn't actually use an iv, but it's part of the API
+    let iv: Vec<u8> = Vec::new();
+
     let crypter = symm::Crypter::new(symm::Type::AES_128_ECB);
-    crypter.init(symm::Mode::Decrypt, key, iv);
+    crypter.init(mode, key, iv);
     crypter.pad(false);
 
     let result = crypter.update(data);
     crypter.finalize();
     result
+}
+
+pub fn decrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    crypt(symm::Mode::Decrypt, key, data)
 }
 
 #[test]
@@ -20,14 +26,7 @@ fn test_decrypt_with_bytes() {
 }
 
 pub fn encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
-    let iv: Vec<u8> = vec![];
-    let crypter = symm::Crypter::new(symm::Type::AES_128_ECB);
-    crypter.init(symm::Mode::Encrypt, key, iv);
-    crypter.pad(false);
-
-    let result = crypter.update(data);
-    crypter.finalize();
-    result
+    crypt(symm::Mode::Encrypt, key, data)
 }
 
 #[test]
