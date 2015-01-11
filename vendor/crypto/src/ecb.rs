@@ -26,6 +26,7 @@ fn test_decrypt_with_bytes() {
 }
 
 pub fn encrypt(key: &[u8], data: &[u8]) -> Vec<u8> {
+    assert_eq!(0, data.len() % 16);
     crypt(symm::Mode::Encrypt, key, data)
 }
 

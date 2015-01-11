@@ -67,6 +67,7 @@ pub fn oracle(input: &[u8]) -> Vec<u8> {
     plain.push_all(&random_padding()[]);
     plain.push_all(input);
     plain.push_all(&random_padding()[]);
+    plain = pkcs7::pad(&plain[], 16);
 
     if std::rand::random() {
         ecb::encrypt(&random_key()[], &plain[])
