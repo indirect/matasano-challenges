@@ -58,27 +58,28 @@ fn random_padding() -> Vec<u8> {
     random_bytes(thread_rng().gen_range::<usize>(5, 10))
 }
 
-fn random_key() -> Vec<u8> {
+pub fn random_key() -> Vec<u8> {
     random_bytes(16)
 }
 
-pub fn oracle(input: &[u8]) -> Vec<u8> {
+pub fn oracle(key: &[u8], input: &[u8]) -> Vec<u8> {
     let mut plain: Vec<u8> = Vec::new();
+
     plain.push_all(&random_padding()[]);
     plain.push_all(input);
     plain.push_all(&random_padding()[]);
     plain = pkcs7::pad(&plain[], 16);
 
     if std::rand::random() {
-        ecb::encrypt(&random_key()[], &plain[])
+        ecb::encrypt(key, &plain[])
     } else {
-        cbc::encrypt(&random_key()[], &random_key()[], &plain[])
+        cbc::encrypt(key, &random_key()[], &plain[])
     }
 }
 
 #[test]
 fn test_oracle() {
-    let output = oracle(&b"wut"[]);
+    let output = oracle(&random_key()[], &b"YELLOW SUBMARINE"[]);
     // no idea how to test anything other than length
     assert!(output.len() >= 16);
     assert!(output.len() <= 32);
