@@ -1,4 +1,4 @@
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 extern crate xor;
 
 use xor::Xor;

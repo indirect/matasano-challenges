@@ -1,5 +1,5 @@
 extern crate decrypt;
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use serialize::base64::FromBase64;
 use std::io::BufferedReader;
@@ -13,7 +13,7 @@ fn main() {
     let bytes = base64.from_base64().unwrap();
     let answer = decrypt::xor_repeating(bytes.as_slice()).unwrap();
 
-    println!("key        {}", answer.key);
-    println!("key text   {}", String::from_utf8_lossy(answer.key.as_slice()));
-    println!("plaintext\n\n{}", String::from_utf8_lossy(answer.bytes.as_slice()));
+    println!("key        {:?}", answer.key);
+    println!("key text   {:?}", String::from_utf8_lossy(answer.key.as_slice()));
+    println!("plaintext\n\n{:?}", String::from_utf8_lossy(answer.bytes.as_slice()));
 }

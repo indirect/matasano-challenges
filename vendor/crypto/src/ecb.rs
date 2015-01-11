@@ -64,10 +64,10 @@ fn is_not_ecb_with_repeated_15_bytes() {
 }
 
 
-pub fn repeated_block_count(bytes: &[u8], block_size: uint) -> uint {
-    let block_count = bytes.len() / block_size as uint;
+pub fn repeated_block_count(bytes: &[u8], block_size: usize) -> usize {
+    let block_count = bytes.len() / block_size as usize;
 
-    let mut repeated_blocks: uint = 0;
+    let mut repeated_blocks: usize = 0;
     for block_idx in range(0, block_count) {
         let block = bytes.slice(block_idx * block_size, (block_idx + 1) * block_size);
         for other_idx in range(block_idx + 1, block_count) {

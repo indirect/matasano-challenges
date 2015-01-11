@@ -1,5 +1,5 @@
 extern crate decrypt;
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use serialize::hex::FromHex;
 
@@ -8,6 +8,6 @@ fn main() {
     let bytes  = source.from_hex().unwrap();
     let answer = decrypt::xor_byte(bytes.as_slice()).unwrap();
 
-    println!("The best score was {}, using the key {}", answer.score, answer.key);
-    println!("The decoded string is: {}", String::from_utf8_lossy(answer.bytes.as_slice()));
+    println!("The best score was {:?}, using the key {:?}", answer.score, answer.key);
+    println!("The decoded string is: {:?}", String::from_utf8_lossy(answer.bytes.as_slice()));
 }

@@ -1,4 +1,5 @@
-extern crate serialize;
+#![allow(unstable)]
+extern crate "rustc-serialize" as serialize;
 
 use serialize::base64::FromBase64;
 use std::io::BufferedReader;

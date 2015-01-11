@@ -1,4 +1,4 @@
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 extern crate crypto;
 
 use serialize::hex::FromHex;
@@ -15,7 +15,7 @@ fn main() {
         let is_ecb = crypto::ecb::detect(bytes.as_slice());
 
         if is_ecb {
-            println!("line {} is likely encrypted using ECB", index);
+            println!("line {:?} is likely encrypted using ECB", index);
         }
     }
 }

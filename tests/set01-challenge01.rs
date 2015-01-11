@@ -1,4 +1,4 @@
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use serialize::hex::FromHex;
 use serialize::base64::ToBase64;

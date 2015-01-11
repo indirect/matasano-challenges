@@ -1,5 +1,5 @@
 extern crate crypto;
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use serialize::base64::FromBase64;
 use std::io::BufferedReader;
@@ -19,5 +19,5 @@ fn main() {
     );
     let plaintext = String::from_utf8_lossy(result.as_slice());
 
-    println!("{}", plaintext);
+    println!("{:?}", plaintext);
 }

@@ -10,5 +10,5 @@ fn main() {
     );
     let plaintext = String::from_utf8_lossy(result.as_slice());
 
-    println!("{}", plaintext);
+    println!("{:?}", plaintext);
 }

@@ -1,5 +1,5 @@
 extern crate decrypt;
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use std::path::Path;
 use std::io::fs::File;
@@ -15,7 +15,7 @@ fn main() {
     });
     let best = answers.max_by(|answer| answer.score ).unwrap();
 
-    println!("best score: {}", best.score.to_string());
-    println!("decrypted: {}", best.bytes);
-    println!("xor key: '{}'", best.key);
+    println!("best score: {:?}", best.score.to_string());
+    println!("decrypted: {:?}", best.bytes);
+    println!("xor key: '{:?}'", best.key);
 }

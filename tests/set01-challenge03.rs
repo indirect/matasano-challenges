@@ -1,5 +1,5 @@
 extern crate decrypt;
-extern crate serialize;
+extern crate "rustc-serialize" as serialize;
 
 use serialize::hex::FromHex;
 
