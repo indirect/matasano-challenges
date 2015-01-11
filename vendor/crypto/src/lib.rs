@@ -18,7 +18,7 @@ impl std::fmt::Show for Cipher {
     }
 }
 
-pub fn oracle(data: &[u8]) -> Cipher {
+pub fn detect_cipher(data: &[u8]) -> Cipher {
     match ecb::detect(data) {
         true => Cipher::ECB,
         false => Cipher::CBC
@@ -26,23 +26,59 @@ pub fn oracle(data: &[u8]) -> Cipher {
 }
 
 #[test]
-fn test_oracle_with_ecb() {
+fn test_detect_cipher_with_ecb() {
     let mut plain: Vec<u8> = Vec::with_capacity(256);
     for b in range(0, 240) { plain.push(b % 16); }
-    let cipher = ecb::encrypt(b"YELLOW SUBMARINE".as_slice(), plain.as_slice());
-    match oracle(cipher.as_slice()) {
+    let cipher = ecb::encrypt(&b"YELLOW SUBMARINE"[], &plain[]);
+    match detect_cipher(&cipher[]) {
         Cipher::ECB => (),
-        Cipher::CBC => panic!("Oh no! The oracle is wrong")
+        Cipher::CBC => panic!("Oh no! detect_cipher is wrong")
     };
 }
 
 #[test]
-fn test_oracle_with_cbc() {
+fn test_detect_cipher_with_cbc() {
     let mut plain: Vec<u8> = Vec::with_capacity(256);
     for b in range(0, 240) { plain.push(b % 16); }
-    let cipher = cbc::encrypt_zero_iv(b"YELLOW SUBMARINE".as_slice(), plain.as_slice());
-    match oracle(cipher.as_slice()) {
-        Cipher::ECB => panic!("Oh no! The oracle is wrong"),
+    let cipher = cbc::encrypt_zero_iv(&b"YELLOW SUBMARINE"[], &plain[]);
+    match detect_cipher(&cipher[]) {
+        Cipher::ECB => panic!("Oh no! detect_cipher is wrong"),
         Cipher::CBC => ()
     };
+}
+
+
+fn random_bytes(count: usize) -> Vec<u8> {
+    use std::rand::{thread_rng, Rng};
+    thread_rng().gen_iter::<u8>().take(count).collect()
+}
+
+fn random_padding() -> Vec<u8> {
+    use std::rand::{thread_rng, Rng};
+    random_bytes(thread_rng().gen_range::<usize>(5, 10))
+}
+
+fn random_key() -> Vec<u8> {
+    random_bytes(16)
+}
+
+pub fn oracle(input: &[u8]) -> Vec<u8> {
+    let mut plain: Vec<u8> = Vec::new();
+    plain.push_all(&random_padding()[]);
+    plain.push_all(input);
+    plain.push_all(&random_padding()[]);
+
+    if std::rand::random() {
+        ecb::encrypt(&random_key()[], &plain[])
+    } else {
+        cbc::encrypt(&random_key()[], &random_key()[], &plain[])
+    }
+}
+
+#[test]
+fn test_oracle() {
+    let output = oracle(&b"wut"[]);
+    // no idea how to test anything other than length
+    assert!(output.len() >= 16);
+    assert!(output.len() <= 32);
 }
