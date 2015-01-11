@@ -12,17 +12,9 @@ pub fn decrypt(key: &[u8], iv: &[u8], bytes: &[u8]) -> Vec<u8> {
     let mut previous_block = iv;
 
     for block in bytes.chunks(16) {
-        println!("\nblock {}", block);
-
         let block_decrypt = ecb::decrypt(key, block.as_slice());
-        println!("block decrypt {}", block_decrypt);
-
         let block_result = block_decrypt.xor(previous_block.as_slice());
-        println!("block result {}", block_result);
-
         result.push_all(block_result.as_slice());
-        println!("result {}", result);
-
         previous_block = block;
     }
 
