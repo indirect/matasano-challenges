@@ -3,7 +3,7 @@ pub mod ecb;
 pub mod cbc;
 pub mod pkcs7;
 
-#[derive(Copy)]
+#[derive(Copy, PartialEq, Eq)]
 pub enum Cipher {
     ECB,
     CBC
