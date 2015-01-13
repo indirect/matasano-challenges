@@ -13,9 +13,12 @@ fn unknown_oracle(key: &[u8], input: &[u8]) -> Vec<u8> {
 }
 
 fn main() {
+    use std::collections::HashMap;
+    use std::iter::repeat;
+
     let key = crypto::random_key();
     let input = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    let block_size: usize;
+    let mut block_size: usize = 0;
 
     // Block size detection
     let mut prev_first: u8 = 0;
@@ -38,4 +41,17 @@ fn main() {
     } else {
         println!("Cipher used is not ECB?!?!");
     }
+
+    // Discover first byte
+    let base: Vec<u8> = repeat(50).take(block_size - 1).collect();
+    let mut blocks: HashMap<Vec<u8>, u8> = HashMap::new();
+    for byte in range(0u8, 255) {
+        let mut input = base.clone();
+        input.push(byte);
+        let block = unknown_oracle(&key[], &input[])[0..16].to_vec();
+        blocks.insert(block, byte);
+    }
+
+    let cipher_block = unknown_oracle(&key[], &base[])[0..16].to_vec();
+    println!("First byte is {}", blocks.get(&cipher_block).unwrap());
 }
