@@ -46,7 +46,7 @@ fn main() {
     let base: Vec<u8> = repeat(50).take(block_size - 1).collect();
     let mut blocks: HashMap<Vec<u8>, u8> = HashMap::new();
     for byte in range(0u8, 255) {
-        let mut input = base.clone();
+        let mut input = base.dup();
         input.push(byte);
         let block = unknown_oracle(&key[], &input[])[0..16].to_vec();
         blocks.insert(block, byte);
