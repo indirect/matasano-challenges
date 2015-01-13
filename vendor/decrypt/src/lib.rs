@@ -1,3 +1,4 @@
+#![allow(unstable)]
 extern crate serialize;
 extern crate xor;
 extern crate english;
@@ -9,7 +10,7 @@ use xor::Xor;
 pub struct XorByteAnswer {
     pub bytes: Vec<u8>,
     pub key: u8,
-    pub score: int
+    pub score: isize
 }
 
 pub fn xor_byte(bytes: &[u8]) -> Option<XorByteAnswer> {
@@ -41,7 +42,7 @@ fn test_decrypt_xor_byte() {
     assert_eq!(answer.key, b'X');
 }
 
-fn transpose(bytes: &[u8], num_columns: uint) -> Vec<Vec<u8>> {
+fn transpose(bytes: &[u8], num_columns: usize) -> Vec<Vec<u8>> {
     let mut transposed: Vec<Vec<u8>> = Vec::new();
     for mut idx in range(0, num_columns) {
         let mut column = Vec::new();
@@ -66,11 +67,11 @@ fn test_transpose() {
 
 #[derive(Show)]
 struct KeySize {
-    value: uint,
+    value: usize,
     distance: f64
 }
 
-pub fn guess_block_size(bytes: &[u8]) -> Option<uint> {
+pub fn guess_block_size(bytes: &[u8]) -> Option<usize> {
     use std::cmp;
 
     let max_size = cmp::min(bytes.len() / 4, 30) + 1;
@@ -155,7 +156,7 @@ fn test_decrypt_xor_repeating_single() {
     use serialize::hex::FromHex;
     let ciphertext = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
     let hex = ciphertext.from_hex().unwrap();
-    let answer = xor_repeating(hex.as_slice());
+    let answer = xor_repeating(hex.as_slice()).unwrap();
     assert_eq!(answer.key, b"X");
     assert_eq!(answer.bytes, b"Cooking MC's like a pound of bacon");
 }
@@ -165,7 +166,7 @@ fn test_decrypt_xor_repeating_triple() {
     use serialize::hex::FromHex;
     let ciphertext = "1d2b2c3a632c3a632469372d202d2269372d2837652030652c2d263b3a353d262169342c3d2b652863372c332028372c27246522263c676306282d65302c3069252c2e36372c632c3d632a3c377a";
     let hex = ciphertext.from_hex().unwrap();
-    let answer = xor_repeating(hex.as_slice());
+    let answer = xor_repeating(hex.as_slice()).unwrap();
     assert_eq!(answer.key, b"ICE");
     assert_eq!(answer.bytes, b"This is a thing that is encrypted with a repeating key. Can you figure it out?");
 }
