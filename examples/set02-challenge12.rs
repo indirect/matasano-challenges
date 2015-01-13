@@ -14,17 +14,19 @@ fn unknown_oracle(key: &[u8], input: &[u8]) -> Vec<u8> {
 
 fn main() {
     let key = crypto::random_key();
-    let input = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    let input = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     // Block size detection
-    for size in range(2, input.len()) {
-        let ciphertext = unknown_oracle(&key[], &input[0..size]);
-        let repeat_count = crypto::repeated_block_count(&ciphertext[], size);
-        println!("{} repeated blocks when input was {} bytes", repeat_count, size);
+    let mut first_byte = 0;
 
-        if repeat_count > 0 {
-            println!("1. Block size is probably {} bytes", size);
+    for size in range(1, input.len()) {
+        let ciphertext = unknown_oracle(&key[], &input[0..size]);
+
+        if first_byte == ciphertext[0] {
+            println!("1. Block size is likely {} bytes", size - 1);
             break;
         }
+
+        first_byte = ciphertext[0];
     }
 }
