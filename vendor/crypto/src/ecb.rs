@@ -43,7 +43,7 @@ fn test_encrypt_with_exact_block_size() {
 
 
 pub fn detect(bytes: &[u8]) -> bool {
-    repeated_block_count(bytes, 16) > 0
+    super::repeated_block_count(bytes, 16) > 0
 }
 
 #[test]
@@ -62,39 +62,4 @@ fn is_not_ecb_with_repeated_15_bytes() {
         1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
     ];
     assert_eq!(false, detect(bytes.as_slice()));
-}
-
-
-pub fn repeated_block_count(bytes: &[u8], block_size: usize) -> usize {
-    let block_count = bytes.len() / block_size as usize;
-
-    let mut repeated_blocks: usize = 0;
-    for block_idx in range(0, block_count) {
-        let block = bytes.slice(block_idx * block_size, (block_idx + 1) * block_size);
-        for other_idx in range(block_idx + 1, block_count) {
-            if block == bytes.slice(other_idx*block_size, (other_idx+1)*block_size) {
-                repeated_blocks += 1;
-            }
-        }
-    }
-
-    repeated_blocks
-}
-
-#[test]
-fn no_repeated_blocks() {
-    let bytes = vec![1, 2, 3, 4, 5, 6];
-    assert_eq!(0, repeated_block_count(bytes.as_slice(), 3));
-}
-
-#[test]
-fn one_repeated_block() {
-    let bytes = vec![1, 1, 2, 3, 4, 5, 1, 1, 6, 7];
-    assert_eq!(1, repeated_block_count(bytes.as_slice(), 2));
-}
-
-#[test]
-fn three_repeated_blocks() {
-    let bytes = vec![1, 1, 2, 3, 1, 1, 4, 5, 1, 1, 6, 7];
-    assert_eq!(3, repeated_block_count(bytes.as_slice(), 2));
 }

@@ -3,13 +3,28 @@ extern crate crypto;
 extern crate matasano_challenges;
 extern crate "rustc-serialize" as serialize;
 
-fn main() {
-    let data = matasano_challenges::bytes_from_data_file("set02-challenge12.txt");
-    let mut plain = b"my string".to_vec();
-    plain.push_all(&data[]);
-    let input = crypto::pkcs7::pad(&plain[], 16);
-    let key = crypto::random_key();
+fn unknown_oracle(key: &[u8], input: &[u8]) -> Vec<u8> {
+    let mut plain_bytes = input.to_vec();
+    let unknown_bytes = matasano_challenges::bytes_from_data_file("set02-challenge12.txt");
+    plain_bytes.push_all(&unknown_bytes[]);
 
-    let ciphertext = crypto::ecb::encrypt(&key[], &input[]);
-    println!("{:?}", ciphertext);
+    let padded_bytes = crypto::pkcs7::pad(&plain_bytes[], 16);
+    crypto::ecb::encrypt(&key[], &padded_bytes[])
+}
+
+fn main() {
+    let key = crypto::random_key();
+    let input = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+    // Block size detection
+    for size in range(2, input.len()) {
+        let ciphertext = unknown_oracle(&key[], &input[0..size]);
+        let repeat_count = crypto::repeated_block_count(&ciphertext[], size);
+        println!("{} repeated blocks when input was {} bytes", repeat_count, size);
+
+        if repeat_count > 0 {
+            println!("1. Block size is probably {} bytes", size);
+            break;
+        }
+    }
 }
