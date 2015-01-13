@@ -15,6 +15,7 @@ fn unknown_oracle(key: &[u8], input: &[u8]) -> Vec<u8> {
 fn main() {
     let key = crypto::random_key();
     let input = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    let block_size: usize;
 
     // Block size detection
     let mut prev_first: u8 = 0;
@@ -22,10 +23,19 @@ fn main() {
         let first_byte = unknown_oracle(&key[], &input[0..size])[0];
 
         if prev_first == first_byte {
-            println!("1. Block size is likely {} bytes", size - 1);
+            block_size = size - 1;
+            println!("Block size is likely {} bytes", block_size);
             break;
         }
 
         prev_first = first_byte;
+    }
+
+    // ECB detection
+    let ciphertext = unknown_oracle(&key[], &input[]);
+    if crypto::ecb::detect(&ciphertext[]) {
+        println!("Cipher used is ECB");
+    } else {
+        println!("Cipher used is not ECB?!?!");
     }
 }
