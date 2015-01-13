@@ -84,3 +84,7 @@ fn test_oracle() {
     assert!(output.len() >= 16);
     assert!(output.len() <= 32);
 }
+
+pub fn random_oracle(input: &[u8]) -> Vec<u8> {
+    oracle(&random_key()[], &input[])
+}
